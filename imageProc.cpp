@@ -7,15 +7,38 @@ using namespace cv;
 
 int main(int argc, char *argv[])
 {
-  VideoCapture cam(0);//TODO temporary for raspberry pi camera at home, network camera will be implemented later
+  VideoCapture vcap(1);//TODO temporary for raspberry pi camera at home, network camera will be implemented later
   Mat frame;
-  while(true)
+  //while(true)
+  {
+    if(!vcap.read(frame))
+      {
+	waitKey();
+      }
+    cvtColor(frame,frame,CV_RGB2HSV);
+    imwrite("sourceImage.jpg",frame);
+    inRange(frame,Scalar(3,0,0),Scalar(20,255,255),frame);
+    imwrite("ThresholdedImage.jpg",frame);
+    waitKey();
+    // process image
+  }
+
+}
+
+void erosion (Mat in, Mat out,int iterations, int shape, Size kernelSize, Point anchor = Point(-1,-1))
+{
+  Mat structuringKernel = getStructuringElement(shape,kernelSize,anchor);
+  for(int i = 0; i< iterations; i++)
     {
-      if(!vcap.read(frame))
-	{
-	  waitKey();
-	}
-      // process image
-    }   
-      
+      erode(in,out,structuringKernel);
+    }
+}
+
+void dilation(Mat in, Mat out,int iterations, int shape, Size kernelSize, Point anchor = Point(-1,-1))
+{
+  Mat structuringKernel = getStructuringElement(shape,kernelSize,anchor);
+  for(int i = 0; i< iterations; i++)
+    {
+      dilate(in,out,structuringKernel);
+    }
 }
