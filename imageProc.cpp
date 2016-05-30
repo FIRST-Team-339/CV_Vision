@@ -8,7 +8,7 @@ using namespace cv;
 
 int main(int argc, char *argv[])
 {
-  VideoCapture vcap(0);//TODO temporary for raspberry pi camera at home, network camera will be implemented later
+  VideoCapture vcap(1);//TODO temporary for raspberry pi camera at home, network camera will be implemented later
   Mat frame;
   //while(true)
   {
