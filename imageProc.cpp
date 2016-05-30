@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
   {
     if(!vcap.read(frame))
       {
-	waitKey();
+            waitKey();
       }
     cvtColor(frame,frame,CV_RGB2HSV);
     imwrite("sourceImage.jpg",frame);
