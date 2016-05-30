@@ -2,18 +2,20 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
+#include <iostream>
 
 using namespace cv;
 
 int main(int argc, char *argv[])
 {
-  VideoCapture vcap(1);//TODO temporary for raspberry pi camera at home, network camera will be implemented later
+  VideoCapture vcap(0);//TODO temporary for raspberry pi camera at home, network camera will be implemented later
   Mat frame;
   //while(true)
   {
     if(!vcap.read(frame))
       {
-            waitKey();
+        std::cout<<"Could not read frame!"<<std::endl;
+        return -1;
       }
     cvtColor(frame,frame,CV_RGB2HSV);
     imwrite("sourceImage.jpg",frame);
