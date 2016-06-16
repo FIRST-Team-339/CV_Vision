@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 	    average += vals[i];
 	  }
 	average /= count + 1;
-	printf("Average processing time: %f millis \nx", average);
+	printf("Average processing time: %f millis \n", average);
 	return 0;
       }
     //waitKey();
