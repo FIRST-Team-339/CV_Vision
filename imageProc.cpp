@@ -14,7 +14,8 @@ int count = 0;
 
 int main(int argc, char *argv[])
 {
-  VideoCapture vcap(0);//TODO temporary for raspberry pi camera at home, network camera will be implemented later
+  string cameraPath = "http://FRC:FRC@10.3.39.11/axis-cgi/jpg/image.cgi?date=1&clock=1&resolution=320x240";
+  VideoCapture vcap(cameraPath);//should work, not entirely sure.
   Mat frame;
   printf("Image size: %dx%d",frame.rows,frame.cols);
   while(true)
