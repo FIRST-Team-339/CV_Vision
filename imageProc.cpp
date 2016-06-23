@@ -33,12 +33,12 @@ int main(int argc, char *argv[])
         std::cout<<"Could not read frame!"<<std::endl;
         return -1;
       }
-    long int beginTime = getTimeMilliseconds();
-    cvtColor(frame,frame,CV_BGR2RGB);//No idea what the int constant should be for rpicam
+    //long int beginTime = getTimeMilliseconds();
+    cvtColor(frame,frame,CV_RGB2HSV);//No idea what the int constant should be for axiscam
     //imwrite("sourceImage.jpg",frame);
     inRange(frame,Scalar(3,0,0),Scalar(20,255,255),frame);
     //imwrite("ThresholdedImage.jpg",frame);
-    long int endTime = getTimeMilliseconds();
+    //long int endTime = getTimeMilliseconds();
     //printf("Time to threshold: %d millis\n", endTime - beginTime);
     return 0;
     //waitKey();
