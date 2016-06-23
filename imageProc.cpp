@@ -6,11 +6,19 @@
 #include <sys/time.h>
 
 using namespace cv;
-
-struct timeval system_time;
+using namespace std;
 
 int vals[1000];
 int count = 0;
+
+//Written by Noah Golmant, from:
+//https://github.com/noahgolmant/Text-Region-Identification/blob/master/ImageProcessing.cpp
+static inline long getTimeMilliseconds()
+ {
+    timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_usec / 1000;
+}
 
 int main(int argc, char *argv[])
 {
@@ -25,31 +33,14 @@ int main(int argc, char *argv[])
         std::cout<<"Could not read frame!"<<std::endl;
         return -1;
       }
-    gettimeofday(&system_time,NULL);
-    long int beginTime = system_time.tv_sec * 1000 + system_time.tv_usec/1000;
+    long int beginTime = getTimeMilliseconds();
     cvtColor(frame,frame,CV_BGR2RGB);//No idea what the int constant should be for rpicam
     //imwrite("sourceImage.jpg",frame);
     inRange(frame,Scalar(3,0,0),Scalar(20,255,255),frame);
     //imwrite("ThresholdedImage.jpg",frame);
-    gettimeofday(&system_time,NULL);
-    long int endTime = system_time.tv_sec * 1000 + system_time.tv_usec/1000;
-    printf("Time to process: %d millis\n", endTime - beginTime);
-    if(count <1000)
-      {
-	vals[count]= endTime-beginTime;
-	count++;
-      }
-    else
-      {
-	double average = 0;
-	for(int i = 0; i < count; i++)
-	  {
-	    average += vals[i];
-	  }
-	average /= count + 1;
-	printf("Average processing time: %f millis \n", average);
-	return 0;
-      }
+    long int endTime = getTimeMilliseconds();
+    //printf("Time to threshold: %d millis\n", endTime - beginTime);
+    return 0;
     //waitKey();
     //process image
   }
