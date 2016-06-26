@@ -22,7 +22,7 @@ static inline long getTimeMilliseconds()
 
 int main(int argc, char *argv[])
 {
-  string cameraPath = "http://FRC:FRC@10.3.39.11/axis-cgi/jpg/image.cgi?date=1&clock=1&resolution=320x240";
+  string cameraPath = "http://FRC:FRC@192.168.1.17/axis-cgi/jpg/image.cgi?date=1&clock=1&resolution=320x240";//"http://FRC:FRC@10.3.39.11/axis-cgi/jpg/image.cgi?date=1&clock=1&resolution=320x240";
   VideoCapture vcap(cameraPath);//should work, not entirely sure.
   Mat frame;
   printf("Image size: %dx%d",frame.rows,frame.cols);
