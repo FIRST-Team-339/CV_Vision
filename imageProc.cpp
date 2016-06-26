@@ -66,7 +66,7 @@ void dilation(Mat in, Mat out,int iterations, int shape, Size kernelSize, Point 
 }
 
 // Convex Hull implementation
- Mat src_copy = src.clone();
+/* Mat src_copy = src.clone();
  Mat threshold_output;
  vector<vector<Point> > contours;
  vector<Vec4i> hierarchy;
@@ -89,3 +89,4 @@ void dilation(Mat in, Mat out,int iterations, int shape, Size kernelSize, Point 
   drawContours( drawing, contours, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
   drawContours( drawing, hull, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
  }
+*/
