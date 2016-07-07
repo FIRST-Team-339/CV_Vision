@@ -10,6 +10,11 @@ using namespace std;
 
 int vals[1000];
 int count = 0;
+string cameraPath;
+
+Mat convexHull(Mat, Mat);
+void erosion (Mat, Mat,int, int, Size, Point = Point(-1,-1))
+void dilation(Mat, Mat, int, int, Size, Point = Point(-1,-1))
 
 //Written by Noah Golmant, from:
 //https://github.com/noahgolmant/Text-Region-Identification/blob/master/ImageProcessing.cpp
@@ -19,8 +24,6 @@ static inline long getTimeMilliseconds()
     gettimeofday(&tv, NULL);
     return tv.tv_usec / 1000;
 }
-
-string cameraPath;
 
 int main(int argc, char *argv[])
 {
