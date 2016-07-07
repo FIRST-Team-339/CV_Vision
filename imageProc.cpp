@@ -46,10 +46,10 @@ int main(int argc, char *argv[])
         return -1;
       }
     //long int beginTime = getTimeMilliseconds();
-    cvtColor(frame,frame,CV_RGB2HSV);//No idea what the int constant should be for axiscam
-    //imwrite("sourceImage.jpg",frame);
+    imwrite("sourceImage.jpg",frame);//openCV can't write in HSV format
+    cvtColor(frame,frame,CV_BGR2HSV);
     inRange(frame,Scalar(3,0,0),Scalar(20,255,255),frame);
-    //imwrite("ThresholdedImage.jpg",frame);
+    imwrite("ThresholdedImage.jpg",frame);
     //long int endTime = getTimeMilliseconds();
     //printf("Time to threshold: %d millis\n", endTime - beginTime);
     return 0;
@@ -75,6 +75,33 @@ void dilation(Mat in, Mat out,int iterations, int shape, Size kernelSize, Point 
     {
       dilate(in,out,structuringKernel);
     }
+}
+
+Mat convexHull(Mat in, Mat out)
+{
+ Mat src_copy = src.clone();
+ Mat threshold_output;
+ vector<vector<Point> > contours;
+ vector<Vec4i> hierarchy;
+ 
+ // Find contours
+ threshold( src_gray, threshold_output, 200, 255, THRESH_BINARY );
+ findContours( threshold_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+ 
+ // Find the convex hull object for each contour
+ vector<vector<Point> >hull( contours.size() );
+ for( int i = 0; i < contours.size(); i++ )
+ {  convexHull( Mat(contours[i]), hull[i], false ); }
+ 
+ // Draw contours + hull results
+ RNG rng;
+ Mat drawing = Mat::zeros( threshold_output.size(), CV_8UC3 );
+ for( int i = 0; i< contours.size(); i++ )
+ {
+  Scalar color = Scalar( rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255) );
+  drawContours( drawing, contours, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+  drawContours( drawing, hull, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+ }
 }
 
 // Convex Hull implementation
