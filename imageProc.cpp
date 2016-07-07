@@ -20,18 +20,25 @@ static inline long getTimeMilliseconds()
     return tv.tv_usec / 1000;
 }
 
+string cameraPath;
+
 int main(int argc, char *argv[])
 {
-  string cameraPath = "http://FRC:FRC@192.168.1.17/axis-cgi/jpg/image.cgi?date=1&clock=1&resolution=320x240";//"http://FRC:FRC@10.3.39.11/axis-cgi/jpg/image.cgi?date=1&clock=1&resolution=320x240";
+  if(argc > 1)
+    {
+      cameraPath = argv[1];
+    }
+  //default camera path
+  cameraPath = "http://FRC:FRC@192.168.1.17/axis-cgi/jpg/image.cgi?date=1&clock=1&resolution=320x240";//"http://FRC:FRC@10.3.39.11/axis-cgi/jpg/image.cgi?date=1&clock=1&resolution=320x240";
   VideoCapture vcap;
   Mat frame;
-  printf("Image size: %dx%d",frame.rows,frame.cols);
+  //printf("Image size: %dx%d",frame.rows,frame.cols);
   if(!vcap.open(cameraPath))
     {
       std::cout<<"could not open video stream!"<<std::endl;
       return -1;
     }
-  while(true)
+  // while(true)
   {
     if(!vcap.read(frame))
       {
