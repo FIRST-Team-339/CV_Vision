@@ -10,6 +10,11 @@ using namespace std;
 
 int vals[1000];
 int count = 0;
+string cameraPath;
+
+Mat convexHull(Mat, Mat);
+void erosion (Mat, Mat,int, int, Size, Point);
+void dilation(Mat, Mat, int, int, Size, Point);
 
 //Written by Noah Golmant, from:
 //https://github.com/noahgolmant/Text-Region-Identification/blob/master/ImageProcessing.cpp
@@ -20,8 +25,6 @@ static inline long getTimeMilliseconds()
     return tv.tv_usec / 1000;
 }
 
-string cameraPath;
-
 int main(int argc, char *argv[])
 {
   if(argc > 1)
@@ -29,7 +32,7 @@ int main(int argc, char *argv[])
       cameraPath = argv[1];
     }
   //default camera path
-  cameraPath = "http://FRC:FRC@192.168.1.10/mjpg/1/video.mjpg";//"http://FRC:FRC@10.3.39.11/mjpg/1/video.mjpg"
+  cameraPath = "http://FRC:FRC@10.3.39.11/mjpg/1/video.mjpg";//"http://FRC:FRC@192.168.1.10/mjpg/1/video.mjpg"
   VideoCapture vcap;
   Mat frame;
   //printf("Image size: %dx%d",frame.rows,frame.cols);
@@ -80,9 +83,10 @@ void dilation(Mat in, Mat out,int iterations, int shape, Size kernelSize, Point 
 Mat convexHull(Mat src, Mat out)
 {
  Mat src_copy = src.clone();
- Mat src_gray = cvtColor(src_copy, src_gray, CV_BGR2GRAY);
- //Mat threshold_output;
- vector<vector<Point>> contours;
+ Mat src_gray;
+ cvtColor(src_copy, src_gray, CV_BGR2GRAY);
+ Mat threshold_output;
+ vector<vector<Point> > contours;
  vector<Vec4i> hierarchy;
  // Find contours
  //threshold(src_gray, threshold_output, 200, 255, THRESH_BINARY);
@@ -90,7 +94,7 @@ Mat convexHull(Mat src, Mat out)
  findContours(threshold_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
  
  // Find the convex hull object for each contour
- vector<vector<Point>> hull(contours.size());
+ vector<vector<Point> > hull(contours.size());
  for(int i = 0; i < contours.size(); i++)
  {
    convexHull(Mat(contours[i]), hull[i], false);
