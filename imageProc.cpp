@@ -1,3 +1,4 @@
+#define AT_HOME true
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -32,8 +33,15 @@ int main(int argc, char *argv[])
     {
       cameraPath = argv[1];
     }
-  //default camera path
-  cameraPath = "http://FRC:FRC@10.3.39.11/mjpg/1/video.mjpg";//"http://FRC:FRC@192.168.1.10/mjpg/1/video.mjpg"
+  //Default Camera Paths
+  if(AT_HOME)
+    {
+      cameraPath = "http://FRC:FRC@192.168.1.10/mjpg/1/video.mjpg";
+    }
+  else
+    {
+      cameraPath = "http://FRC:FRC@10.3.39.11/mjpg/1/video.mjpg";//"http://FRC:FRC@192.168.1.10/mjpg/1/video.mjpg"
+    }
   VideoCapture vcap;
   Mat frame;
   //printf("Image size: %dx%d",frame.rows,frame.cols);
