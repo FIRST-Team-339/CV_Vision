@@ -1,5 +1,3 @@
-#define AT_HOME true
-
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -12,6 +10,7 @@ using namespace std;
 
 int vals[1000];
 int count = 0;
+string ipAddr;
 string cameraPath;
 
 Mat convexHull(Mat, Mat);
@@ -31,17 +30,13 @@ int main(int argc, char *argv[])
 {
   if(argc > 1)
     {
-      cameraPath = argv[1];
-    }
-  //Default Camera Paths
-  if(AT_HOME)
-    {
-      cameraPath = "http://FRC:FRC@192.168.1.10/mjpg/1/video.mjpg";
+      ipAddr = argv[1];
     }
   else
     {
-      cameraPath = "http://FRC:FRC@10.3.39.11/mjpg/1/video.mjpg";//"http://FRC:FRC@192.168.1.10/mjpg/1/video.mjpg"
+      ipAddr = "10.3.39.11";
     }
+  cameraPath = "http://FRC:FRC@"<<ipAddr<<"/mjpg/1/video.mjpg";
   VideoCapture vcap;
   Mat frame;
   //printf("Image size: %dx%d",frame.rows,frame.cols);
