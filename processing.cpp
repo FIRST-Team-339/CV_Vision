@@ -25,17 +25,15 @@ void dilation(Mat in, Mat out,int iterations, int shape, Size kernelSize, Point 
     }
 }
 
+/**
+ * Accepts a binary input image, draws a convex hull image, and writes it to <out>
+*/
 Mat convexHull(Mat src, Mat out)
 {
-    Mat src_copy = src.clone();
-    Mat src_gray;
-    cvtColor(src_copy, src_gray, CV_BGR2GRAY);
-    Mat threshold_output;
     vector<vector<Point> > contours;
     vector<Vec4i> hierarchy;
     // Find contours
-    //threshold(src_gray, threshold_output, 200, 255, THRESH_BINARY);
-    findContours(threshold_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0,
+    findContours(src, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0,
                  0));
     // Find the convex hull object for each contour
     vector<vector<Point> > hull(contours.size());
@@ -45,12 +43,14 @@ Mat convexHull(Mat src, Mat out)
     }
     // Draw contours + hull results
     RNG rng;
-    Mat drawing = Mat::zeros(threshold_output.size(), CV_8UC3);
+    out = Mat::zeros(src.size(), CV_8UC3);
     for(int i = 0; i< contours.size(); i++)
     {
-        Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0,255), rng.uniform(0,255));
-        drawContours(out, contours, i, color, 1, 8, vector<Vec4i>(), 0, Point());
-        drawContours(out, hull, i, color, 1, 8, vector<Vec4i>(), 0, Point());
+        Scalar color1 = Scalar(0,0,255);
+        Scalar color2 = Scalar(255,0,0);
+        drawContours(out, hull, i, color2, CV_FILLED, 8, vector<Vec4i>(), 0, Point());
+        drawContours(out, contours, i, color1, 1, 8, vector<Vec4i>(), 0, Point());
+        printf("Contour count: %d\n",i);
     }
     return out;
 }

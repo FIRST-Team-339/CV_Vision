@@ -36,9 +36,10 @@ int main(int argc, char *argv[])
       ipAddr = "10.3.39.11";
     }
   cameraPath =  "http://FRC:FRC@" + ipAddr + "/mjpg/1/video.mjpg";
-  cout<<cameraPath<<endl;
   VideoCapture vcap;
   Mat frame;
+  Mat thresholdedFrame;
+  Mat frameConvexHull;
   //printf("Image size: %dx%d",frame.rows,frame.cols);
   if(!vcap.open(cameraPath))
     {
@@ -54,14 +55,17 @@ int main(int argc, char *argv[])
       }
     //long int beginTime = getTimeMilliseconds();
     imwrite("sourceImage.jpg",frame);//openCV can't write in HSV format
-    cvtColor(frame,frame,CV_BGR2HSV);
-    frame = colorThreshold(frame, 0,200,0,200,0,200);
+    //cvtColor(frame,frame,CV_BGR2HSV);
+    thresholdedFrame = colorThreshold(frame, 70,100,75,110,185,220);
+    frameConvexHull = convexHull(thresholdedFrame,frameConvexHull);
     //inRange(frame,Scalar(3,0,0),Scalar(20,255,255),frame);
-    imwrite("ThresholdedImage.jpg",frame);
+    imwrite("ThresholdedImage.jpg",thresholdedFrame);
+    //cvtColor(frameConvexHull,frameConvexHull,CV_GRAY2BGR);
+    imwrite("convexHull.jpg",frameConvexHull);
     //long int endTime = getTimeMilliseconds();
     //printf("Time to threshold: %d millis\n", endTime - beginTime);
-    return 0;
     //waitKey();
+    return 0;
     //process image
   }
 
