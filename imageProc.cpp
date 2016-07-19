@@ -55,7 +55,8 @@ int main(int argc, char *argv[])
     //long int beginTime = getTimeMilliseconds();
     imwrite("sourceImage.jpg",frame);//openCV can't write in HSV format
     cvtColor(frame,frame,CV_BGR2HSV);
-    inRange(frame,Scalar(3,0,0),Scalar(20,255,255),frame);
+    frame = colorThreshold(frame, 0,200,0,200,0,200);
+    //inRange(frame,Scalar(3,0,0),Scalar(20,255,255),frame);
     imwrite("ThresholdedImage.jpg",frame);
     //long int endTime = getTimeMilliseconds();
     //printf("Time to threshold: %d millis\n", endTime - beginTime);
