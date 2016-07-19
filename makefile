@@ -1,10 +1,11 @@
 full: imageProc.o processing.o processing.h
-	g++ `pkg-config --cflags --libs opencv` -o imageProc.out imageProc.o processing.o
-imageProc.o: processing.h imageProc.cpp
-	g++ `pkg-config --cflags --libs opencv` -c imageProc.cpp
+	g++ -o imageProc.out imageProc.o processing.o `pkg-config --cflags --libs opencv`
+imageProc.o: imageProc.cpp
+	g++ -c imageProc.cpp `pkg-config --cflags --libs opencv`
 processing.o: processing.cpp processing.h
-	g++ `pkg-config --cflags --libs opencv` -c processing.cpp
+	g++ -c processing.cpp `pkg-config --cflags --libs opencv`
 clean:
 	rm -f *.out
 	rm -f *.jpg
 	rm -f *~
+	rm -f *.o
