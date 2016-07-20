@@ -28,7 +28,7 @@ void dilation(Mat in, Mat out,int iterations, int shape, Size kernelSize, Point 
 /**
  * Accepts a binary input image, draws a convex hull image, and writes it to <out>
 */
-Mat convexHull(Mat src, Mat out)
+Mat convexHull(Mat src)
 {
     vector<vector<Point> > contours;
     vector<Vec4i> hierarchy;
@@ -43,14 +43,11 @@ Mat convexHull(Mat src, Mat out)
     }
     // Draw contours + hull results
     RNG rng;
-    out = Mat::zeros(src.size(), CV_8UC3);
+    Mat out = Mat::zeros(src.size(), CV_8UC1);
     for(int i = 0; i< contours.size(); i++)
     {
-        Scalar color1 = Scalar(0,0,255);
-        Scalar color2 = Scalar(255,0,0);
-        drawContours(out, hull, i, color2, CV_FILLED, 8, vector<Vec4i>(), 0, Point());
-        drawContours(out, contours, i, color1, 1, 8, vector<Vec4i>(), 0, Point());
-        printf("Contour count: %d\n",i);
+        drawContours(out, hull, i, 255, CV_FILLED, 8, vector<Vec4i>(), 0, Point());
+        //drawContours(out, contours, i, color1, 1, 8, vector<Vec4i>(), 0, Point());
     }
     return out;
 }
