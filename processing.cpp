@@ -2,10 +2,17 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
-//#include "processing.h"
+#include "processing.h"
 
 using namespace cv;
-using namespace std; //may not be necessary, check when you're not in an emacs window
+using namespace std;//vector
+
+vector<Blob> imageBlobs;
+
+int getNumBlobs()
+{
+    return imageBlobs.size();
+}
 
 void erosion (Mat in, Mat out,int iterations, int shape, Size kernelSize, Point anchor = Point(-1,-1))
 {
@@ -58,3 +65,51 @@ Mat colorThreshold(Mat in, int lowB, int highB, int lowG, int highG, int lowR, i
     inRange(in, Scalar(lowB,lowG,lowR), Scalar(highB, highG, highR), out);
     return out;
 }
+
+void updateBlobs(Mat blobImage)
+{
+    if(blobImage.channels() > 1)//If the image is color
+        return;//quit without doing anything
+    else
+    {
+        vector<vector<Point> > contours;
+        vector<Vec4i> hierarchy;
+        vector<int> excludeIndexList;
+        excludeIndexList.resize(10);
+        // Find contours
+        findContours(blobImage, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0,
+                 0));
+        for(int i = 0; i < hierarchy.size();i++)
+        {
+            if(hierarchy[i][2] >= 0)//if the contour has a child contour
+                {
+                    excludeIndexList.push_back(hierarchy[i][2]);//exclude the child
+                }
+            else if(hierarchy[i][3])//if the contour has a parent contour
+                {
+                    excludeIndexList.push_back(i);//exclude the contour
+                }
+        }
+        Blob tempBlob;
+        for(int i = 0; i < contours.size(); i++)
+        {
+            if(!isInVec(excludeIndexList,i))//if we haven't excluded this contour
+            {
+                tempBlob.boundingPoints = contours[i];
+                imageBlobs[i] = tempBlob;//put it in our blob list
+            }
+        }
+    }
+}
+
+bool isInVec(vector<int>& vecToCheck, int valToCheck)
+{
+    for(int i = 0; i < vecToCheck.size(); i++)
+    {
+        if (vecToCheck[i] == valToCheck)
+            return true;
+    }
+    return false;
+}
+
+
