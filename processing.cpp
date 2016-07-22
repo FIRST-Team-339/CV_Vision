@@ -92,10 +92,13 @@ void updateBlobs(Mat blobImage)
         }
         Blob tempBlob;
         for(int i = 0; i < contours.size(); i++)
-        {
+          {
+            printf("Got into blob check for\n");
             if(!isInVec(excludeIndexList,i))//if we haven't excluded this contour
             {
+            printf("Got into if\n");
                 tempBlob.boundingPoints = contours[i];
+                printf("Got past tempBlob\n");
                 imageBlobs[i] = tempBlob;//put it in our blob list
             }
         }
