@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
         std::cout<<"could not open video stream!"<<std::endl;
         return -1;
     }
-    while(true)
+    //while(true)
     {
         if(!vcap.read(frame))
         {
@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
             thresholdedFrame = colorThreshold(frame, 65,105,70,115,180,225);
             updateBlobs(thresholdedFrame);
             cout<<"Num Blobs: " << getNumBlobs()<<endl;
+            imwrite("BlobbedImage.jpg", drawBlobsOnImage(thresholdedFrame,false));
             //frameConvexHull = convexHull(thresholdedFrame);
             //long int endTime = getTimeMilliseconds();
             //printf("Time to Process: %d millis\n", endTime - beginTime);

@@ -10,6 +10,9 @@ void dilation(Mat, Mat, int, int, Size, Point);
 bool isInVec(std::vector<int>& vecToCheck, int valToCheck);
 void updateBlobs(Mat);
 int getNumBlobs();
+Mat drawBlobsOnImage(Mat,bool);
+std::vector<std::vector<Point> > turnBlobsIntoContours();
+
 struct Blob
 {
     std::vector<Point> boundingPoints;

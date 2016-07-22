@@ -7,7 +7,7 @@
 using namespace cv;
 using namespace std;//vector
 
-vector<Blob> imageBlobs;
+vector<Blob> imageBlobs(0);
 
 int getNumBlobs()
 {
@@ -72,6 +72,7 @@ void updateBlobs(Mat blobImage)
         return;//quit without doing anything
     else
     {
+        imageBlobs.resize(0);
         vector<vector<Point> > contours;
         vector<Vec4i> hierarchy;
         vector<int> excludeIndexList;
@@ -93,13 +94,10 @@ void updateBlobs(Mat blobImage)
         Blob tempBlob;
         for(int i = 0; i < contours.size(); i++)
           {
-            printf("Got into blob check for\n");
             if(!isInVec(excludeIndexList,i))//if we haven't excluded this contour
             {
-            printf("Got into if\n");
                 tempBlob.boundingPoints = contours[i];
-                printf("Got past tempBlob\n");
-                imageBlobs[i] = tempBlob;//put it in our blob list
+                imageBlobs.push_back(tempBlob);//put it in our blob list
             }
         }
     }
@@ -114,5 +112,22 @@ bool isInVec(vector<int>& vecToCheck, int valToCheck)
     }
     return false;
 }
+//TODO Terrible way to get frame size but quick to right for right now
+Mat drawBlobsOnImage(Mat currentFrame,bool closed)
+{
+    Mat out = Mat::zeros(currentFrame.size(), CV_8UC1);
+    for(int i = 0; i< imageBlobs.size(); i++)
+    {
+        drawContours(out,turnBlobsIntoContours(), i, 255, (closed) ? CV_FILLED : 1, 8, vector<Vec4i>(), 0, Point());
+    }
+}
 
+vector<vector<Point> > turnBlobsIntoContours()
+{
+  vector<vector<Point> > out(0);
+  for(int i = 0; i < imageBlobs.size(); i++)
+  {
+    out.push_back(imageBlobs.at(i).boundingPoints);
+  }
+}
 
